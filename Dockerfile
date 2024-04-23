@@ -14,7 +14,7 @@ RUN ln -fs spark-3.3.1-bin-hadoop3 /opt/spark
 RUN echo -e "export SPARK_HOME=/opt/spark\nPATH=$PATH:$SPARK_HOME/bin\nexport PATH" >> ~/.bash_profile
 RUN . ~/.bash_profile
 COPY --chown=myuser1:myuser1 . .
-RUN pip3 install -r requirements.txt
+RUN pip install -r requirements.txt
 
 # Start application
 CMD ["spark-submit", "main.py", "ValidationDataset.csv", "winemodel"]
