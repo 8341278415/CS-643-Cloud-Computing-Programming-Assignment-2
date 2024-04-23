@@ -1,26 +1,20 @@
-# Base image - Ubuntu
-FROM ubuntu:latest
+FROM ubuntu:20.04
 
-# Update packages and install required dependencies
-RUN apt-get update && apt-get install -y \
-    openjdk-8-jdk \
-    python3 \
-    python3-pip \
-    wget \
-    && rm -rf /var/lib/apt/lists/*
+# Install Java and other dependencies
+RUN apt-get update -y \
+    && apt-get install openjdk-8-jdk -y \
+    && apt-get install python3-pip -y \
+    && apt-get install -y wget
 
-
-
-# Set up working directory
-WORKDIR /app
-
-# Copy the Python script and requirements file
-COPY . /app/
-
-
-# Install dependencies
-RUN pip install --upgrade pip && pip install -r requirements.txt
-RUN chmod 774 *
+RUN adduser myuser1
+RUN wget https://dlcdn.apache.org/spark/spark-3.3.1/spark-3.3.1-bin-hadoop3.tgz
+RUN tar xvf spark-3.3.1-bin-hadoop3.tgz -C /opt
+RUN chown -R myuser1:myuser1 /opt/spark-3.3.1-bin-hadoop3
+RUN ln -fs spark-3.3.1-bin-hadoop3 /opt/spark
+RUN echo -e "export SPARK_HOME=/opt/spark\nPATH=$PATH:$SPARK_HOME/bin\nexport PATH" >> ~/.bash_profile
+RUN . ~/.bash_profile
+COPY --chown=myuser1:myuser1 . .
+RUN pip3 install -r requirements.txt
 
 # Start application
 CMD ["spark-submit", "main.py", "ValidationDataset.csv", "winemodel"]
