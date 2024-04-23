@@ -24,8 +24,8 @@ RUN wget -qO- https://downloads.apache.org/spark/spark-3.3.3/spark-3.3.3-bin-had
 WORKDIR /app
 
 # Copy the Python script and requirements file
-COPY prediction.py /app/
-COPY requirements.txt /app/
+COPY . /app/
+
 
 # Install dependencies
 RUN pip install --upgrade pip && pip install -r requirements.txt
