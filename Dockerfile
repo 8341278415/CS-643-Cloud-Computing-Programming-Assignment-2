@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM apache/spark-py:v3.3.2
 
 # Install Java and other dependencies
 RUN apt-get update -y \
