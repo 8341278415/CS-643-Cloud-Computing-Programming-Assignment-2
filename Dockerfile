@@ -1,20 +1,15 @@
+# Use the official Apache Spark Docker image as the base image
 FROM apache/spark-py:v3.3.2
 
-# Install Java and other dependencies
-RUN apt-get update -y \
-    && apt-get install openjdk-8-jdk -y \
-    && apt-get install python3-pip -y \
-    && apt-get install -y wget
+# Set the working directory
+WORKDIR /app
 
-RUN adduser myuser1
-RUN wget https://archive.apache.org/dist/spark/spark-3.3.1/spark-3.3.1-bin-hadoop3.tgz
-RUN tar xvf spark-3.3.1-bin-hadoop3.tgz -C /opt
-RUN chown -R myuser1:myuser1 /opt/spark-3.3.1-bin-hadoop3
-RUN ln -fs spark-3.3.1-bin-hadoop3 /opt/spark
-RUN echo -e "export SPARK_HOME=/opt/spark\nPATH=$PATH:$SPARK_HOME/bin\nexport PATH" >> ~/.bash_profile
-RUN . ~/.bash_profile
-COPY --chown=myuser1:myuser1 . .
+# Copy the Python script and other files to the container
+COPY . /app
+
+# Install any additional dependencies
 RUN pip install -r requirements.txt
+
 
 # Start application
 CMD ["spark-submit", "main.py", "ValidationDataset.csv", "winemodel"]
