@@ -28,6 +28,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: akhiljoshi1424/s-643-cloud-computing-programming-assignment-2:latest
+          tags: akhiljoshi1424/cs-643-cloud-computing-programming-assignment-2:latest
 
           # Add other relevant build parameters here
